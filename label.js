@@ -67,11 +67,9 @@ Vue.createApp({
       this.results.push({q: this.question, a: this.answer, label: event.target.id})
       this.getQA()
       this.text = this.question
-      console.log(this.results)
     },
     exportData() {
       let data = JSON.stringify(this.results)
-      console.log(data)
       var win = window.open()
       let url = "data:application/json;charset=utf-8," + encodeURIComponent(data)
       win.document.write(
@@ -82,9 +80,19 @@ Vue.createApp({
     }
   },
   mounted() {
+    window.addEventListener('keyup', (ev) => {
+      if (ev.key == 'Enter') {
+        this.toggleQA()
+      } else if (ev.key == 'ArrowRight') {
+        this.nextQ({target: {id: 'funny'}})
+      } else if (ev.key == 'ArrowLeft') {
+        this.nextQ({target: {id: 'notfunny'}})
+      }
+    })
     shuffle(QUESTIONS)
     shuffle(ANSWERS)
     this.getQA()
     this.text = this.question
+
   }
 }).mount('.container')
